@@ -133,3 +133,8 @@ GET /api/v1/posts/?status=published
 GET /api/v1/posts/?ordering=-created_at
 GET /api/v1/posts/?page=2&page_size=5
 ```
+
+
+## 👨‍💻 Author
+
+AOD
