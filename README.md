@@ -20,7 +20,54 @@ Production-ready Django REST API boilerplate with:
   - helpers
   - middlewares
 
-## Quick start
+---
+
+## 📁 Project Structure
+
+```bash
+my_django_api/
+├── docker-compose.yml
+├── docker-compose.dev.yml
+├── docker-compose.prod.yml
+├── Dockerfile
+├── .dockerignore
+├── .env.dev
+├── .env.prod.example
+├── requirements/
+│   ├── base.txt
+│   └── dev.txt
+├── nginx/
+│   └── default.conf
+├── src/
+│   ├── manage.py
+│   ├── config/
+│   │   ├── asgi.py
+│   │   ├── wsgi.py
+│   │   ├── urls.py
+│   │   └── settings/
+│   │       ├── base.py
+│   │       ├── development.py
+│   │       └── production.py
+│   └── app/
+│       ├── controllers/
+│       ├── services/
+│       ├── models/
+│       ├── routes/
+│       ├── transformers/
+│       ├── helpers/
+│       ├── middlewares/
+│       └── modules/
+│           └── users/
+```
+
+---
+
+## ⚙️ Requirements
+
+- Docker & Docker Compose
+- Python 3.12+
+
+---
 
 ### Development
 
@@ -35,12 +82,16 @@ Open:
 - Swagger: http://localhost:8000/api/docs/
 - Redoc: http://localhost:8000/api/redoc/
 
+---
+
 ### Production
 
 ```bash
 cp .env.prod.example .env.prod
 docker compose -f docker-compose.prod.yml up --build -d
 ```
+
+---
 
 ## First commands
 
@@ -50,6 +101,7 @@ docker compose exec web python manage.py makemigrations
 docker compose exec web python manage.py migrate
 docker compose exec web python manage.py createsuperuser
 ```
+---
 
 ## Auth endpoints
 
