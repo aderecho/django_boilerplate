@@ -1,0 +1,66 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: django_boilerplate_db
+    restart: unless-stopped
+    env_file:
+      - .env.dev
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7-alpine
+    container_name: django_boilerplate_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+
+  web:
+    build: .
+    container_name: django_boilerplate_web
+    restart: unless-stopped
+    env_file:
+      - .env.dev
+    volumes:
+      - ./src:/app
+    ports:
+      - "8000:8000"
+    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    depends_on:
+      - db
+      - redis
+
+  celery_worker:
+    build: .
+    container_name: django_boilerplate_worker
+    restart: unless-stopped
+    env_file:
+      - .env.dev
+    volumes:
+      - ./src:/app
+    command: celery -A config worker -l info
+    depends_on:
+      - db
+      - redis
+
+  celery_beat:
+    build: .
+    container_name: django_boilerplate_beat
+    restart: unless-stopped
+    env_file:
+      - .env.dev
+    volumes:
+      - ./src:/app
+    command: celery -A config beat -l info
+    depends_on:
+      - db
+      - redis
+
+volumes:
+  postgres_data:
